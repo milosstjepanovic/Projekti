@@ -6,16 +6,38 @@
     android:layout_height="match_parent"
     tools:context="com.example.user.mojprojekat.LoginActivity">
 
-    <Button
-        android:layout_width="200dp"
-        android:layout_height="76dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="36dp"
-        android:onClick="btnStartPostsActivity"
-        android:text="posts activity"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/username"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:hint="Username"/>
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/username"
+            android:hint="Password"/>
+
+
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:onClick="btnStartPostsActivity"
+            android:text="Login"
+            android:layout_below="@id/password"/>
+
+
+    </RelativeLayout>
+
+
+
+
+
 
 </android.support.constraint.ConstraintLayout>
