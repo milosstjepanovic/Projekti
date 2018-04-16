@@ -17,13 +17,13 @@
             </intent-filter>
         </activity>
         <activity android:name=".CreatePostActivity"
-            android:label="CreatePostActivity"/>
+            android:label="Create Post"/>
         <activity android:name=".PostsActivity"
-            android:label="PostActivity"/>
+            android:label="Post"/>
         <activity android:name=".ReadPostActivity"
-            android:label="ReadPostActivity"/>
+            android:label="Read Post"/>
         <activity android:name=".SettingsActivity"
-            android:label="SettingsActivity"/>
+            android:label="Settings"/>
     </application>
 
 </manifest>

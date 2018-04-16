@@ -1,14 +1,83 @@
 package com.example.user.mojprojekat;
 
+import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 public class ReadPostActivity extends AppCompatActivity {
+
+    private DrawerLayout mDrawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_read_post);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
+        TextView tvTitle = (TextView) findViewById(R.id.tvTitle);
+        TextView tvDescription = (TextView) findViewById(R.id.tvDescription);
+
+        tvTitle.setText(getIntent().getStringExtra("title"));
+        tvDescription.setText(getIntent().getStringExtra("description"));
+
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+                mDrawerLayout.closeDrawers();
+
+                switch (menuItem.getItemId()) {
+
+                    case R.id.post:
+                        Intent i = new Intent(ReadPostActivity.this, PostsActivity.class);
+                        startActivity(i);
+                        break;
+
+                    case R.id.createPost:
+                        Intent i1 = new Intent(ReadPostActivity.this, CreatePostActivity.class);
+                        startActivity(i1);
+                        break;
+
+                    case R.id.settingsPost:
+                        Intent i2 = new Intent(ReadPostActivity.this, SettingsActivity.class);
+                        startActivity(i2);
+                        break;
+                }
+
+                return true;
+            }
+        });
+    }
+
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        int id = menuItem.getItemId();
+
+        switch (id) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+
+        return super.onOptionsItemSelected(menuItem);
     }
 
     @Override

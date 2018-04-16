@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MojProjekat</string>
+
+    <string name="drawer_header_text">Ime i prezime</string>
 </resources>
