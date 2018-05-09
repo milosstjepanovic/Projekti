@@ -10,11 +10,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 public class CreatePostActivity extends AppCompatActivity {
 
@@ -44,7 +47,15 @@ public class CreatePostActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        //actionBar.setDisplayHomeAsUpEnabled(true);
+
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setIcon(R.drawable.ic_launcher_news1);
+            //actionBar.setHomeAsUpIndicator(R.drawable.ic_drawer);
+            actionBar.setHomeButtonEnabled(true);
+        }
+
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
@@ -78,6 +89,27 @@ public class CreatePostActivity extends AppCompatActivity {
         });
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.activity_appbaritem, menu);
+
+        MenuItem addItem = menu.findItem(R.id.action_new);
+        MenuItem refreshItem = menu.findItem(R.id.action_refresh);
+        MenuItem settingItem = menu.findItem(R.id.action_settings);
+        MenuItem delleteItem = menu.findItem(R.id.action_delete);
+
+        addItem.setVisible(false);
+        refreshItem.setVisible(false);
+        settingItem.setVisible(false);
+        delleteItem.setVisible(false);
+
+        return true;
+    }
+
+
+
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         int id = menuItem.getItemId();
 
@@ -85,6 +117,22 @@ public class CreatePostActivity extends AppCompatActivity {
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
+
+            case R.id.action_accept:
+                Toast.makeText(this, "Save post", Toast.LENGTH_SHORT).show();
+                return true;
+
+            case R.id.action_cancel:
+                Toast.makeText(this, "Cancel", Toast.LENGTH_SHORT).show();
+                return true;
+
+
+            //ukoliko treba da stoji u appbaru!!
+
+//            case R.id.action_settings:
+//                Intent i = new Intent(this, SettingsActivity.class);
+//                startActivity(i);
+//                return true;
         }
 
         return super.onOptionsItemSelected(menuItem);

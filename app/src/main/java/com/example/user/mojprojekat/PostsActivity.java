@@ -2,6 +2,8 @@ package com.example.user.mojprojekat;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,8 +16,23 @@ import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
+import adapters.PostAdapter;
+import fragments.MyFragments;
+import model.Post;
+import tools.FragmentTransition;
+import tools.Mokap;
 
 public class PostsActivity extends AppCompatActivity {
+
+    private ArrayList<Post> posts;
+    private ListView listView;
 
     private DrawerLayout mDrawerLayout;
 
@@ -28,7 +45,41 @@ public class PostsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        //actionBar.setDisplayHomeAsUpEnabled(true);
+
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setIcon(R.drawable.ic_launcher_news1);
+            //actionBar.setHomeAsUpIndicator(R.drawable.ic_drawer);
+            actionBar.setHomeButtonEnabled(true);
+        }
+
+        //instancira se myfragments i time se prikaze lista postova
+        //FragmentTransition.to(MyFragments.newInstance(), this, false);
+
+
+
+        listView = (ListView) findViewById(R.id.lvPosts1);
+
+        posts = Mokap.getPosts();
+
+        PostAdapter postAdapter = new PostAdapter(this, R.layout.post_list, posts);
+        listView.setAdapter(postAdapter);
+
+
+        sortPostBy(posts);
+
+        /*posts = Mokap.posts;
+
+
+        sortPostBy(posts);
+
+
+        PostAdapter adapter = new PostAdapter(this, posts);
+        listView = findViewById(R.id.lvPosts);
+        listView.setAdapter(adapter);
+*/
+
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
@@ -60,6 +111,8 @@ public class PostsActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+
     }
 
     public boolean onOptionsItemSelected(MenuItem menuItem) {
@@ -69,6 +122,14 @@ public class PostsActivity extends AppCompatActivity {
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
+
+
+              //ukoliko treba da stoji u appbaru!!
+
+//            case R.id.action_settings:
+//                Intent i = new Intent(this, SettingsActivity.class);
+//                startActivity(i);
+//                return true;
         }
 
         return super.onOptionsItemSelected(menuItem);
@@ -78,6 +139,39 @@ public class PostsActivity extends AppCompatActivity {
     public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
         return super.onCreateView(parent, name, context, attrs);
     }
+
+
+    public void sortPostBy(ArrayList<Post> posts) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        String sortPostBy = sp.getString("pref_sort_post", "default");
+
+
+        if (sortPostBy.equals("Date")) {
+            Collections.sort(posts, new Comparator<Post>() {
+                @Override
+                public int compare(Post post1, Post post2) {
+                    return post1.getDate().compareTo(post2.getDate());
+                }
+            });
+        } else if (sortPostBy.equals("Popularity")) {
+            Collections.sort(posts, new Comparator<Post>() {
+                @Override
+                public int compare(Post post2, Post post1) {
+                    if (post1.getPopularity() > post2.getPopularity()) {
+                        return 1;
+                    } else if (post1.getPopularity() < post2.getPopularity()) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                }
+            });
+        } else {
+            Toast.makeText(this, "Sorting went wrong, posts unsorted!\n" + sortPostBy, Toast.LENGTH_LONG).show();
+        }
+    }
+
+
 
     @Override
     protected void onStart() {
@@ -97,25 +191,14 @@ public class PostsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        posts = Mokap.getPosts();
+        sortPostBy(posts);
+
+        PostAdapter adapter = new PostAdapter(this, R.layout.post_list, posts);
+        listView = findViewById(R.id.lvPosts1);
+        listView.setAdapter(adapter);
     }
 
 
-
-    /**
-
-    public void btnStartCreatePostActivity(View view) {
-        Intent i = new Intent(this, CreatePostActivity.class);
-        startActivity(i);
-    }
-
-    public void btnStartReadPostActivity(View view) {
-        Intent i = new Intent(this, ReadPostActivity.class);
-        startActivity(i);
-    }
-
-    public void btnStartSettingsActivity(View view) {
-        Intent i = new Intent(this, SettingsActivity.class);
-        startActivity(i);
-    }
-     **/
 }

@@ -17,13 +17,22 @@
             </intent-filter>
         </activity>
         <activity android:name=".CreatePostActivity"
-            android:label="Create Post"/>
+            android:label="Create Post"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".PostsActivity"
-            android:label="Post"/>
+            android:label="Post"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".ReadPostActivity"
-            android:label="Read Post"/>
+            android:label="Read Post"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".SettingsActivity"
-            android:label="Settings"/>
+            android:label="Settings"
+            android:parentActivityName=".PostsActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".PostsActivity" />
+        </activity>
     </application>
 
 </manifest>
