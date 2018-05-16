@@ -4,7 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -20,12 +25,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import fragments.MyFragments;
+import fragments.ReadCommentsFragment;
+import fragments.ReadPostFragment;
+import model.Post;
 import tools.FragmentTransition;
 import tools.Mokap;
 
 public class ReadPostActivity extends AppCompatActivity {
 
+    private SectionsPagerAdapter mSectionsPagerAdapter;
     private DrawerLayout mDrawerLayout;
+    private ViewPager mViewPager;
+    private TabLayout mTabLayout;
+    private Post activityPost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +54,20 @@ public class ReadPostActivity extends AppCompatActivity {
 //        actionBar.setIcon(R.drawable.ic_launcher_news1);
 //        actionBar.setHomeButtonEnabled(true);
 
+        Post post = (Post) getIntent().getSerializableExtra("post");
+        this.activityPost = post;
+
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+
+        mViewPager = (ViewPager) findViewById(R.id.viewpager);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        mTabLayout = (TabLayout) findViewById(R.id.tabs);
+
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
+        mTabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+
+
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setIcon(R.drawable.ic_launcher_news1);
@@ -51,16 +77,16 @@ public class ReadPostActivity extends AppCompatActivity {
 
 
 
-        TextView tvTitle = (TextView) findViewById(R.id.tvTitle);
+        /*TextView tvTitle = (TextView) findViewById(R.id.tvTitle);
         TextView tvDescription = (TextView) findViewById(R.id.tvDescription);
         ImageView ivPhoto = (ImageView) findViewById(R.id.ivPhoto);
         TextView tvAuthor = (TextView) findViewById(R.id.tvAuthor);
+*/
 
+        //tvTitle.setText(getIntent().getStringExtra("title"));
+        //tvDescription.setText(getIntent().getStringExtra("description"));
 
-        tvTitle.setText(getIntent().getStringExtra("title"));
-        tvDescription.setText(getIntent().getStringExtra("description"));
-
-        ivPhoto.setImageResource(R.drawable.lepa_lukic);
+        //ivPhoto.setImageResource(R.drawable.lepa_lukic);
 
 //        switch (ivPhoto) {
 //            case :
@@ -68,7 +94,7 @@ public class ReadPostActivity extends AppCompatActivity {
 //                break;
 //        }
 
-        tvAuthor.setText(getIntent().getStringExtra("author".toString()));
+        //tvAuthor.setText(getIntent().getStringExtra("author".toString()));
 
 
 
@@ -138,6 +164,45 @@ public class ReadPostActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(menuItem);
+    }
+
+
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+        // The post that the adapter is showing
+        private Post fragmentPost;
+
+        public SectionsPagerAdapter(FragmentManager fm) {
+            super(fm);
+            this.fragmentPost = activityPost;
+        }
+
+
+        @Override
+        public Fragment getItem(int position) {
+            // getItem is called to instantiate the fragment for the given page.
+            // Return a PlaceholderFragment (defined as a static inner class below).
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("post", this.fragmentPost);
+            switch (position) {
+                case 0:
+                    ReadPostFragment rpf = new ReadPostFragment();
+                    rpf.setArguments(bundle);
+                    return rpf;
+                case 1:
+                    ReadCommentsFragment rcf = new ReadCommentsFragment();
+                    rcf.setArguments(bundle);
+                    return rcf;
+
+                default:
+                    return null;
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return 2;
+        }
     }
 
 

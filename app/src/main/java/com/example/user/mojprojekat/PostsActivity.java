@@ -17,17 +17,25 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 import adapters.PostAdapter;
+import de.hdodenhof.circleimageview.CircleImageView;
 import fragments.MyFragments;
 import model.Post;
+import model.User;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import tools.FragmentTransition;
 import tools.Mokap;
+import util.UserService;
 
 public class PostsActivity extends AppCompatActivity {
 
@@ -81,9 +89,35 @@ public class PostsActivity extends AppCompatActivity {
 */
 
 
+        //videti gde treba da se ubaci da radi
+
+    /*    String email = getIntent().getStringExtra("loggedinUserEmail");
+
+        TextView headerEmail = (TextView) findViewById(R.id.headerEmail);
+        headerEmail.setText(email);
+
+*/
+
+
+
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+
+
+        String email = getIntent().getStringExtra("loggedinUserEmail");
+
+        TextView headerEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.headerEmail);
+        headerEmail.setText(email);
+
+        CircleImageView headerUserPicture = (CircleImageView) navigationView.getHeaderView(0).findViewById(R.id.headerUserPicture);
+        if (email.equals("milos@gmail.com")) {
+            headerUserPicture.setImageDrawable(getResources().getDrawable(R.drawable.milos));
+        } else {
+            headerUserPicture.setImageDrawable(getResources().getDrawable(R.drawable.marko));
+        }
+
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -106,11 +140,18 @@ public class PostsActivity extends AppCompatActivity {
                         Intent i2 = new Intent(PostsActivity.this, SettingsActivity.class);
                         startActivity(i2);
                         break;
+
+                    case R.id.logout:
+                        Intent i3 = new Intent(PostsActivity.this, LoginActivity.class);
+                        startActivity(i3);
+                        finish();
+                        break;
                 }
 
                 return true;
             }
         });
+
 
 
     }
@@ -199,6 +240,7 @@ public class PostsActivity extends AppCompatActivity {
         listView = findViewById(R.id.lvPosts1);
         listView.setAdapter(adapter);
     }
+
 
 
 }

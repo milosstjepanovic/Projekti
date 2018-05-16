@@ -26,6 +26,25 @@
             android:background="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|enterAlways"/>
 
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.TabItem
+                android:id="@+id/tabItemsPost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="post"/>
+
+            <android.support.design.widget.TabItem
+                android:id="@+id/tabItemsComment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="comments"/>
+
+        </android.support.design.widget.TabLayout>
+
     </android.support.design.widget.AppBarLayout>
 
 
@@ -35,15 +54,17 @@
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
-        <include layout="@layout/content_detail" />
+<!--
 
-        <!--
+        <include layout="@layout/content_detail" />
+-->
+
+
         <android.support.v4.view.ViewPager
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-        -->
 
 
         <android.support.design.widget.NavigationView
