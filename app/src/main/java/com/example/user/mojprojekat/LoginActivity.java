@@ -80,8 +80,6 @@ public class LoginActivity extends AppCompatActivity {
                 });
             }
         });
-
-
     }
 
     private boolean validateLoginInputs(String email, String password){
@@ -106,25 +104,7 @@ public class LoginActivity extends AppCompatActivity {
         return null;
     }
 
- /*   public void doLogin() {
 
-        UserTestService userTestService = UserTestService.retrofit.create(UserTestService.class);
-
-        final Call<String> call = userTestService.getUsers();
-
-        call.enqueue(new Callback<String> >() {
-            @Override
-            public void onResponse(Call<List<String>> call, Response<List<Contributor>> response) {
-                final TextView textView = (TextView) findViewById(R.id.textView);
-                textView.setText(response.body().toString());
-            }
-            @Override
-            public void onFailure(Call<List<Contributor>> call, Throwable t) {
-                final TextView textView = (TextView) findViewById(R.id.textView);
-                textView.setText("Something went wrong: " + t.getMessage());
-            }
-
-    }*/
 
     @Override
     protected void onStart() {
