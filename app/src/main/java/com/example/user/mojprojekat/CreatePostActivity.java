@@ -1,6 +1,7 @@
 package com.example.user.mojprojekat;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -17,7 +18,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CreatePostActivity extends AppCompatActivity {
 
@@ -60,6 +64,25 @@ public class CreatePostActivity extends AppCompatActivity {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+
+
+        // izvlacim id i mail iz sharedPref sacuvane u login activity
+        SharedPreferences sharedPreferences = getSharedPreferences("sp", MODE_PRIVATE);
+        Integer id = sharedPreferences.getInt("userId", 0);
+        String email = sharedPreferences.getString("userEmail", null);
+
+        // postavljam mail i sliku u header.. mora ovde nakon inicijalizacije navigationView-a
+        TextView headerEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.headerEmail);
+        headerEmail.setText(email);
+
+        CircleImageView headerUserPicture = (CircleImageView) navigationView.getHeaderView(0).findViewById(R.id.headerUserPicture);
+        if (email.equals("milos@gmail.com")) {
+            headerUserPicture.setImageDrawable(getResources().getDrawable(R.drawable.milos));
+        } else {
+            headerUserPicture.setImageDrawable(getResources().getDrawable(R.drawable.marko));
+        }
+
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -68,19 +91,26 @@ public class CreatePostActivity extends AppCompatActivity {
 
                 switch (menuItem.getItemId()) {
 
-                    case R.id.post:
-                        Intent i = new Intent(CreatePostActivity.this, PostsActivity.class);
+                    case R.id.readPost:
+                        Intent i = new Intent(CreatePostActivity.this, ReadPostActivity.class);
                         startActivity(i);
                         break;
 
-                    case R.id.readPost:
-                        Intent i1 = new Intent(CreatePostActivity.this, ReadPostActivity.class);
-                        startActivity(i1);
+                    case R.id.createPost:
+                        Toast.makeText(getApplicationContext(), "You are currently in that page", Toast.LENGTH_SHORT).show();
+                        /*Intent i1 = new Intent(CreatePostActivity.this, CreatePostActivity.class);
+                        startActivity(i1);*/
                         break;
 
                     case R.id.settingsPost:
                         Intent i2 = new Intent(CreatePostActivity.this, SettingsActivity.class);
                         startActivity(i2);
+                        break;
+
+                    case R.id.logout:
+                        Intent i3 = new Intent(CreatePostActivity.this, LoginActivity.class);
+                        startActivity(i3);
+                        finish();
                         break;
                 }
 
