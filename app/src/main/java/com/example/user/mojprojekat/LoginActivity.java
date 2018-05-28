@@ -47,8 +47,8 @@ public class LoginActivity extends AppCompatActivity {
                 if(!validateLoginInputs(email, password))
                     return;
 
-               UserService userService = RetrofitClient.retrofit.create(UserService.class);
-               retrofit2.Call<List<User>> call = userService.getUsers();
+                UserService userService = RetrofitClient.retrofit.create(UserService.class);
+                retrofit2.Call<List<User>> call = userService.getUsers();
 
                 call.enqueue(new Callback<List<User>>() {
                     @Override

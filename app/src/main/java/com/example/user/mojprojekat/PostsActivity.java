@@ -80,6 +80,7 @@ public class PostsActivity extends AppCompatActivity {
         sortPostBy(posts);
 
 */
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
 
         listView = findViewById(R.id.lvPosts1);
@@ -94,8 +95,6 @@ public class PostsActivity extends AppCompatActivity {
         });
 
 
-
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
 
@@ -181,7 +180,9 @@ public class PostsActivity extends AppCompatActivity {
     }
 
 
-    public void sortPostBy(ArrayList<Post> posts) {
+    public void sortPostBy() {
+        /*if (posts == null || posts.isEmpty())
+            return;*/
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         String sortPostBy = sp.getString("pref_sort_post", "default");
 
@@ -207,7 +208,7 @@ public class PostsActivity extends AppCompatActivity {
                 }
             });
         } else {
-            Toast.makeText(this, "Sorting went wrong, posts unsorted!\n" + sortPostBy, Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "Sorting went wrong, posts unsorted!\n" + sortPostBy, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -249,8 +250,7 @@ public class PostsActivity extends AppCompatActivity {
                 //List<Post> posts = new ArrayList<>();
                 try {
                     posts = response.body();
-
-                    // dodati metodu za sortiranje
+                    sortPostBy();
                     PostAdapter adapter = new PostAdapter(getApplicationContext(), posts);
                     listView.setAdapter(adapter);
 
